@@ -10,13 +10,15 @@ let aviso = document.querySelector('.d-2');
 let fotosLaterais = document.querySelector('.d-1-right');
 let numeros = document.querySelector('.d-1-3');
 
+
 // 2 PREENCHENDO A INTERFACE COM NÚMEROS
 
 // 2.1 Variáveis de controle de ambiente
 let etapaAtual = 0;
-let numero = "";
+let numero = ""; // 2.4 -> vai receber o numeros digitados
 
 
+// 2.2 => essa  função vai limpar a tela, vai pegar as informações da  etapaAtual e vai preencher
 function comecarEtapa(){
     let etapa = etapas[etapaAtual];
 
@@ -38,39 +40,65 @@ function comecarEtapa(){
     numeros.innerHTML = numeroHtml;
 }
 
-function atualizaInterface(){
-    alert('finalizou o voto')
+function atualizaInterface(){ // 2.3 
+    let etapa = etapas[etapaAtual]; // 3 -> PROCURANDO CANDIDATOS
+    let candidato = etapa.candidatos.filter((item)=>{
+        if(item.numero === numero){ // se o numero do candidato for igual ao numero digitado
+            return true;
+        }else{
+            return false;
+        }
+
+    });
+    if(candidato.length > 0){  //3.1
+        candidato = candidato[0];
+        seuvotoPara.style.display="block";
+        aviso.style.display='block';
+        descricao.innerHTML = `Nome: ${candidato.name}<br/>Partido:${candidato.partido}`;
+
+        let fotos = "";
+        for(let i in candidato.fotos){
+            fotos +=`<div class="d-1-image">
+            <img src="/imagens/${candidato.fotos[i].url}" alt="">${candidato.fotos[i].legenda}
+        </div>`
+        }
+       
+        fotosLaterais.innerHTML= fotos
+        
+    }
+    console.log("Candidato", candidato);
 
 }
 
-function clicado(n){
+function clicado(n){ // 2
     let elNumero = document.querySelector('.numero.pisca');
-    if(elNumero !== null){
+    if(elNumero !== null){  //se elNumero for diferente de nulo ele preenche
         elNumero.innerHTML = n;
-        numero = `${numero} ${n}`;
+        numero = `${numero}${n}`;
 
         elNumero.classList.remove('pisca');
-        if(elNumero.nextElementSibling !== null){
+        if(elNumero.nextElementSibling !== null){ // se o proximo elemento de elNumero for diferente de nulo, ele adiciona a classe
             elNumero.nextElementSibling.classList.add('pisca');
-        }else{
-            atualizaInterface();
+        }else{   // se não, ele atualiza a interface
+            setTimeout(atualizaInterface,1000);
+           /*  atualizaInterface(); */
         }
         
     }
 };
 
-function branco(){
+function branco(){ // 2
     alert('clicou em branco');
 
 };
 
-function corrige(){
+function corrige(){ // 2
     alert('clicou em corrige')
 
 
 };
 
-function confirma(){
+function confirma(){ // 2
     alert('clicou em confirma')
 
 };
