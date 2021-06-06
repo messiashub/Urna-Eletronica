@@ -16,6 +16,7 @@ let numeros = document.querySelector('.d-1-3');
 // 2.1 Variáveis de controle de ambiente
 let etapaAtual = 0;
 let numero = ""; // 2.4 -> vai receber o numeros digitados
+let votoBranco = false; // 4.1
 
 
 // 2.2 => essa  função vai limpar a tela, vai pegar as informações da  etapaAtual e vai preencher
@@ -23,6 +24,8 @@ function comecarEtapa(){
     let etapa = etapas[etapaAtual];
 
     let numeroHtml ="";
+    numero = "";  // 4
+    votoBranco = false; // 4.1
     
     for(let i=0; i < etapa.numeros; i++){
         if(i === 0){
@@ -58,13 +61,23 @@ function atualizaInterface(){ // 2.3
 
         let fotos = "";
         for(let i in candidato.fotos){
-            fotos +=`<div class="d-1-image">
+            if(candidato.fotos[i].small){
+                fotos +=`<div class="d-1-image small">
             <img src="/imagens/${candidato.fotos[i].url}" alt="">${candidato.fotos[i].legenda}
         </div>`
+
+            }else{fotos +=`<div class="d-1-image">
+            <img src="/imagens/${candidato.fotos[i].url}" alt="">${candidato.fotos[i].legenda}
+        </div>`}
+            
         }
        
-        fotosLaterais.innerHTML= fotos
-        
+        fotosLaterais.innerHTML= fotos;      
+    }else{     // 3.2 Caso o candidato não exista
+        seuvotoPara.style.display="block";
+        aviso.style.display='block';
+        descricao.innerHTML ='<div class="aviso--grande pisca">VOTO NULO</div>';
+
     }
     console.log("Candidato", candidato);
 
@@ -87,19 +100,50 @@ function clicado(n){ // 2
     }
 };
 
-function branco(){ // 2
-    alert('clicou em branco');
+function branco(){ // 4.1
+    
+        votoBranco = true;
+        seuvotoPara.style.display="block";
+        aviso.style.display='block';
+        descricao.innerHTML= "<div class='aviso--grande pisca'>VOTO EM BRANCO</div>";
+        numeros.innerHTML = ""
+        fotosLaterais.innerHTML="";
+    /* alert('clicou em branco'); */
 
 };
 
-function corrige(){ // 2
-    alert('clicou em corrige')
+function corrige(){ // 4
+    comecarEtapa()
 
 
 };
 
-function confirma(){ // 2
-    alert('clicou em confirma')
+function confirma(){ // 4.2
+    let etapa = etapas[etapaAtual];
+
+    let votoConfirmado = false;
+
+    if(votoBranco === true){
+        votoConfirmado = true;
+        console.log('Votou em BRANCO')
+    }else if(numero.length === etapa.numeros){
+        votoConfirmado= true;
+        console.log(`Confirmando como ${numero}`)
+
+    }
+    if(votoConfirmado){ // 4.3  PASSANDO PARA PRÓXIMA ETAPA
+        etapaAtual++;
+        console.log(etapas[etapaAtual]);
+        if(etapas[etapaAtual] !== undefined){
+            comecarEtapa();
+
+        }else{
+            console.log('FIM')
+        }
+
+    }
+
+   
 
 };
 comecarEtapa();

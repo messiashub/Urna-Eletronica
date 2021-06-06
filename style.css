@@ -57,7 +57,7 @@ body{
     line-height: 40px;
     font-size: 25px;
 }
-.numero.pisca{
+.pisca{
     animation-name: pisca;
     animation-duration: 1s;
     animation-iteration-count: infinite;
@@ -132,4 +132,8 @@ body{
     font-size: 15px;
     width: 90px;
     height: 50px;
+}
+.aviso--grande{
+    font-size: 40px;
+    font-weight: bold;
 }
