@@ -17,6 +17,7 @@ let numeros = document.querySelector('.d-1-3');
 let etapaAtual = 0;
 let numero = ""; // 2.4 -> vai receber o numeros digitados
 let votoBranco = false; // 4.1
+let votos =[];
 
 
 // 2.2 => essa  função vai limpar a tela, vai pegar as informações da  etapaAtual e vai preencher
@@ -125,9 +126,19 @@ function confirma(){ // 4.2
 
     if(votoBranco === true){
         votoConfirmado = true;
+        votos.push({
+            etapa: etapas[etapaAtual].titulo,
+            voto:'branco'
+        })
         console.log('Votou em BRANCO')
     }else if(numero.length === etapa.numeros){
         votoConfirmado= true;
+        votos.push({
+            etapa: etapas[etapaAtual].titulo,
+            voto:numero
+        })
+
+
         console.log(`Confirmando como ${numero}`)
 
     }
@@ -138,7 +149,8 @@ function confirma(){ // 4.2
             comecarEtapa();
 
         }else{
-            console.log('FIM')
+            document.querySelector('.tela').innerHTML ="<div class='aviso--gigante pisca'>FIM</div>";
+            console.log(votos);
         }
 
     }
